@@ -6,4 +6,4 @@ RUN unzip photogenic.zip
 RUN cp -rf photogenic/*  .
 RUN rm -rf photogenic photogenic.zip
 CMD ["/usr/sbin/apache2", "-D", "FOREGROUND"]
-EXPOSE 8080
+EXPOSE 8000
