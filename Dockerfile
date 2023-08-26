@@ -1,9 +1,16 @@
 FROM ubuntu
-ADD https://www.free-css.com/assets/files/free-css-templates/download/page254/photogenic.zip  /var/www/html/
+
+# Install required packages
+RUN apt-get update && apt-get install -y apache2 unzip
+
+# Download and extract content
 WORKDIR /var/www/html
-RUN apt-get update && apt-get install -y unzip
+RUN wget -O photogenic.zip https://www.free-css.com/assets/files/free-css-templates/download/page254/photogenic.zip
 RUN unzip photogenic.zip
-RUN cp -rf photogenic/*  .
-RUN rm -rf photogenic photogenic.zip
-CMD ["/usr/sbin/apache2", "-D", "FOREGROUND"]
-EXPOSE 8000
+RUN rm photogenic.zip
+
+# Start Apache in the foreground
+CMD ["apache2ctl", "-D", "FOREGROUND"]
+
+# Expose port
+EXPOSE 80
