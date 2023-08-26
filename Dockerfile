@@ -1,16 +1,20 @@
-FROM ubuntu
+# Use an official Node.js runtime as the base image
+FROM node:14
 
-# Install required packages
-RUN apt-get update && apt-get install -y apache2 unzip
+# Set the working directory in the container
+WORKDIR /usr/src/app
 
-# Download and extract content
-WORKDIR /var/www/html
-RUN wget -O photogenic.zip https://www.free-css.com/assets/files/free-css-templates/download/page254/photogenic.zip
-RUN unzip photogenic.zip
-RUN rm photogenic.zip
+# Copy the package.json and package-lock.json files
+COPY app/package*.json ./
 
-# Start Apache in the foreground
-CMD ["apache2ctl", "-D", "FOREGROUND"]
+# Install application dependencies
+RUN npm install
 
-# Expose port
-EXPOSE 80
+# Copy the rest of the application code
+COPY app/ .
+
+# Expose port 3000
+EXPOSE 3000
+
+# Command to run the application
+CMD [ "node", "app.js" ]
